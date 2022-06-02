@@ -1,16 +1,23 @@
 class CookiesController < ApplicationController
   def set
-    cookies[:user_alias] = "Netflix"
-    cookies[:client_id] = "ghxfdw3r632"
+    session[:current_user] = {
+      test_id: {
+        name: "Netflix",
+        client_id: "ghxfdw3r632"
+      }
+    }
+
+    cookies[:session_id] = "test_id"
   end
 
   def show
-    @u = cookies[:user_alias]
-    @c = cookies[:client_id]
+    current_user = session[:current_user][cookies[:session_id]]
+    @u = current_user[:name.to_s]
+    @c = current_user[:client_id.to_s]
   end
 
   def delete
-    cookies.delete :user_alias
-    cookies.delete :client_id
+    session.delete :user_alias
+    session.delete :client_id
   end
 end
